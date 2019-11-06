@@ -6,7 +6,11 @@ import { Upload } from "./upload";
 function App() {
   return (
     <div className="App">
-      <Upload />
+      <Upload
+        onDrop={files => {
+          console.log(files);
+        }}
+      />
     </div>
   );
 }

@@ -1,24 +1,45 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-function useFiles(initialState = []) {
+function removeItems(arr, item) {
+  for (var i = 0; i < item; i++) {
+    arr.pop();
+  }
+}
+
+function useFiles({ initialState = [], maxFiles }) {
   const [state, setstate] = useState(initialState);
   function withBlobs(files) {
-    const blobs = [...files].map(file => {
-      if (file.type.includes("image")) {
-        console.log("image");
-        file.preview = URL.createObjectURL(file);
-        return file;
-      }
-    });
+    const destructured = [...files];
+    if (destructured.length > maxFiles) {
+      const difference = destructured.length - maxFiles;
+      removeItems(destructured, difference);
+    }
+    const blobs = destructured
+      .map(file => {
+        if (file.type.includes("image")) {
+          console.log("image");
+          file.preview = URL.createObjectURL(file);
+          return file;
+        }
+        console.log("not image");
+        return null;
+      })
+      .filter(elem => elem !== null);
+
     setstate(blobs);
   }
   return [state, withBlobs];
 }
 
-function Upload({ onDrop }) {
+function Upload({ onDrop, maxFiles = 1 }) {
   const [over, setover] = useState(false);
-  const [files, setfiles] = useFiles([]);
+  const [files, setfiles] = useFiles({ maxFiles });
   const $input = useRef(null);
+  useEffect(() => {
+    if (onDrop) {
+      onDrop(files);
+    }
+  }, [files]);
   return (
     <>
       <div
@@ -51,10 +72,14 @@ function Upload({ onDrop }) {
           onChange={e => {
             setfiles(e.target.files);
           }}
+          multiple={maxFiles > 1}
         />
       </div>
       <div className="blob-container">
         <h2>File Previews</h2>
+        {files.map(file => (
+          <img key={file.name + "file"} src={file.preview} alt="your file" />
+        ))}
         <p>{JSON.stringify(files.length)}</p>
       </div>
     </>
