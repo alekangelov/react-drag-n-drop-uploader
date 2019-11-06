@@ -1,0 +1,37 @@
+.App {
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+}
+
+
+.upload-container {
+  width: 800px;
+  height:400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 2rem auto;
+  border: 1px dashed rgba(black, 0.2);
+  border-radius: 2rem;
+  transition: 0.2s background-color;
+  &.over {
+    background-color: #d5d3ff;
+    img.bg {
+      opacity:1;
+    }
+  }
+  img.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2;
+    transition: 0.2s opacity;
+  }
+  h2 {
+    text-align: center;
+  }
+}
