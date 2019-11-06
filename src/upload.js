@@ -3,12 +3,10 @@ import React, { useState, useRef } from "react";
 function useFiles(initialState = []) {
   const [state, setstate] = useState(initialState);
   function withBlobs(files) {
-    console.log(files, "jakoto");
     const blobs = [...files].map(file => {
       file.preview = URL.createObjectURL(file);
       return file;
     });
-    console.log(blobs, "blobs");
     setstate(blobs);
   }
   return [state, withBlobs];
@@ -41,20 +39,15 @@ function Upload({ onDrop }) {
         className={over ? "upload-container over" : "upload-container"}
       >
         <h2>Upload files here!</h2>
-        <img
-          src={require("./images/upload.png")}
-          onChange={e => {
-            console.log(e.target.files);
-            setfiles(e.target.files);
-          }}
-          className="bg"
-          alt="bg"
-        />
+        <img src={require("./images/upload.png")} className="bg" alt="bg" />
         <input
           style={{ display: "none" }}
           type="file"
           accept="image/*"
           ref={$input}
+          onChange={e => {
+            setfiles(e.target.files);
+          }}
         />
       </div>
       <div className="blob-container">
