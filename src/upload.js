@@ -4,8 +4,11 @@ function useFiles(initialState = []) {
   const [state, setstate] = useState(initialState);
   function withBlobs(files) {
     const blobs = [...files].map(file => {
-      file.preview = URL.createObjectURL(file);
-      return file;
+      if (file.type.includes("image")) {
+        console.log("image");
+        file.preview = URL.createObjectURL(file);
+        return file;
+      }
     });
     setstate(blobs);
   }
@@ -25,8 +28,8 @@ function Upload({ onDrop }) {
         onDrop={e => {
           e.preventDefault();
           e.persist();
-          console.log(e.dataTransfer.files);
           setfiles(e.dataTransfer.files);
+          setover(false);
         }}
         onDragOver={e => {
           e.preventDefault();
