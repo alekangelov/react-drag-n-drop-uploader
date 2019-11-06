@@ -63,7 +63,6 @@ function Upload({ onDrop, maxFiles = 1 }) {
         className={over ? "upload-container over" : "upload-container"}
       >
         <h2>Upload files here!</h2>
-        <img src={require("./images/upload.png")} className="bg" alt="bg" />
         <input
           style={{ display: "none" }}
           type="file"
